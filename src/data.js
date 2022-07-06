@@ -1400,6 +1400,23 @@ export default {routes, airlines, airports};
 /*
 Add getAirlineById(id) and getAirportByCode(code) functions to data.js
 Import the new functions in App.js and use them to display human friendly values in the table
-airline name instead of airline id
-airport name instead of airport code
+1. airline name instead of airline id
+2. airport name instead of airport code
 */
+
+// do not promisify, for simplicity
+export function getAirlineById(id) {
+  const foundAirline = airlines.find(a => a.id === id)
+  if (!foundAirline) {
+    throw new Error(`Airline id: ${id} is not found`)
+  } 
+  return foundAirline
+}
+
+export function getAirportByCode(code) {
+  const foundAirport = airports.find(a => a.code === code)
+  if (!foundAirport) {
+    throw new Error(`Airport code: ${code} is not found`)
+  }
+  return foundAirport
+}

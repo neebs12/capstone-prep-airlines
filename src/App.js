@@ -1,58 +1,50 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import data from './data'
+import data, {getAirlineById, getAirportByCode} from './data'
 
 const App = () => {
   
   const { routes, airlines, airports } = data
 
+  // debugger;
+
   const RoutesTable = ({ routes }) => {
     // [col1, col2, col3]
     // ---> displayed in correct order
-    const columnNames = Object.keys(routes[0])
-    const colRowHash = {}
-    // create colRowHash object with properties pertaining to columnNames
-    // -- the values of each property is then [] (empty array)
-    columnNames.forEach(colName => {colRowHash[colName] = []})
-    // colRowHash now is
-    /*
-    {
-      "airline": [], 
-      ...
-    }
-    */
-   // then populate the sub arrays in object accordingly
-    routes.forEach(route => {
-      // route is an object
-      columnNames.forEach(colName => {
-        // now populating the sub arrays!
-        colRowHash[colName].push(route[colName])
-      })
+    const humanColNames = ["Airline", "Source Airport", "Destination Airport"]
+    const airlineAry = routes.map(r => {
+      const airlineId = r['airline']
+      const airlineName = getAirlineById(airlineId).name
+      return airlineName
+    })
+    const sourceAry = routes.map(r => {
+      const airportCode = r['src']
+      const airportName = getAirportByCode(airportCode).name
+      return airportName
+    })
+    const destAry = routes.map(r => {
+      const airportCode = r['dest']
+      const airportName = getAirportByCode(airportCode).name
+      return airportName      
     })
 
-    // debugger;
     return (
-      <table>
+      <table className=".routes-table">
         <thead>
           <tr>{/*first row, are the col names*/}
-            {columnNames.map(name => <th key={name}>{name}</th>)}
+            {humanColNames.map(name => <th key={name}>{name}</th>)}
           </tr>
         </thead>
         <tbody>
-          {/*subseq rows, are the routes*/}
-          {routes.map((route, ind) => {
-            // iter through routes, for number of columns, but get ind number
-            const tds = columnNames.map(name => {
-              const value = colRowHash[name][ind]
-              return (<td key={value}>{value}</td>)
-            })
+          {routes.map((r, ind) => {
             return (
-              <tr key={JSON.stringify(route)}>
-                {tds}
+              <tr key={JSON.stringify(r)}>
+                <td>{airlineAry[ind]}</td>
+                <td>{sourceAry[ind]}</td>
+                <td>{destAry[ind]}</td>
               </tr>
             )
-            
           })}
         </tbody>
       </table>

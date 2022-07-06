@@ -23,6 +23,8 @@ const App = () => {
     }
   }
 
+  const perPage = 25
+
   return (
     <div className="app">
       <header className="header">
@@ -37,6 +39,7 @@ const App = () => {
           columns={columns}
           rows={routes}
           format={formatValue}
+          perPage={perPage}
         />
       </section>
     </div>

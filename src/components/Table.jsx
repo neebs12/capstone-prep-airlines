@@ -2,6 +2,21 @@ import React, {useState} from 'react'
 
 const Table = ({ className, columns, rows, format, perPage }) => {
   const [page, setPage] = useState(0)
+  const [filterAirlines, setFilterAirlines] = useState('All Airlines')
+
+  const availableFilters = Array.from(
+    new Set(rows.map(r => format('airline', r['airline'])))
+  ).concat('All Airlines')
+
+  
+
+  rows = rows.filter(r => {
+    if (filterAirlines === 'All Airlines') return true
+    // get formatted airline value
+    const airlineName = format('airline', r['airline'])
+    // ---> passes filter if equal, otherwise not
+    return filterAirlines === airlineName
+  })
 
   // filter amount of rows based on page and perPage
   const paginatedRows = rows.slice(page, page + perPage)
@@ -24,8 +39,23 @@ const Table = ({ className, columns, rows, format, perPage }) => {
     )
   }
 
+  const handleAirlineFilter = (e) => {
+    setFilterAirlines(e.target.value)
+    setPage(0)
+  }
+
   return (
     <div>
+      <label htmlFor="airline-filter">Show routes on:</label>
+      <select 
+        id="airline-filter"
+        value={filterAirlines}
+        onChange={handleAirlineFilter}
+      >
+        {availableFilters.map(f => {
+          return <option key={f} value={f}>{f}</option>
+        })}
+      </select>
       <table className={className}>
         <thead>
           <tr>{columns.map(c => <th key={c.name}>{c.name}</th>)}</tr>

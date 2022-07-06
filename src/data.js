@@ -1396,3 +1396,10 @@ const airports = [
 ];
 
 export default {routes, airlines, airports};
+
+/*
+Add getAirlineById(id) and getAirportByCode(code) functions to data.js
+Import the new functions in App.js and use them to display human friendly values in the table
+airline name instead of airline id
+airport name instead of airport code
+*/

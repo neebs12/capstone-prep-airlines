@@ -70,3 +70,8 @@ svg circle.source {
   fill: lightgreen;
   r: 0.5;
 }
+
+.inline-filters {
+  display: flex;
+  justify-content: center;
+}

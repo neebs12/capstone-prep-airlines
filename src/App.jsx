@@ -39,10 +39,16 @@ const App = () => {
     setAirportFilter(filter)
   }
 
-  const processedRoutes = routes.filter(r => {
+  let processedRoutes = routes.filter(r => {
     if (airlineFilter === '') return true
     
     return r['airline'] === +airlineFilter
+  })
+
+  processedRoutes = processedRoutes.filter(r => {
+    if (airportFilter === '') return true
+    
+    return [r['src'], r['dest']].includes(airportFilter)
   })
 
   return (
@@ -54,21 +60,22 @@ const App = () => {
         <p>
           Welcome to the app!
         </p>
-
-        <Select 
-          options={airlines} 
-          valueKey="id" titleKey="name"
-          allTitle="All Airlines" 
-          labelTitle="Show routes on"
-          value={airlineFilter} onSelect={filteredAirlinesOnSelect}
-        />
-        {/* <Select 
-          options={airports}
-          valueKey="code" titleKey="name"
-          allTitle="All Airports"
-          labelTitle="flying in or out of"
-          value={airportFilter} onSelect={filteredAirportsOnSelect}
-        /> */}
+        <div className="inline-filters">
+          <Select 
+            options={airlines} 
+            valueKey="id" titleKey="name"
+            allTitle="All Airlines" 
+            labelTitle="Show routes on"
+            value={airlineFilter} onSelect={filteredAirlinesOnSelect}
+          />
+          <Select 
+            options={airports}
+            valueKey="code" titleKey="name"
+            allTitle="All Airports"
+            labelTitle="flying in or out of"
+            value={airportFilter} onSelect={filteredAirportsOnSelect}
+          />
+        </div>
         <Table 
           className="routes-table" 
           columns={columns}

@@ -39,6 +39,11 @@ const App = () => {
     setAirportFilter(filter)
   }
 
+  const clearFilters = () => {
+    setAirlineFilter('')
+    setAirportFilter('')
+  }
+
   let processedRoutes = routes.filter(r => {
     if (airlineFilter === '') return true
     
@@ -47,7 +52,7 @@ const App = () => {
 
   processedRoutes = processedRoutes.filter(r => {
     if (airportFilter === '') return true
-    
+
     return [r['src'], r['dest']].includes(airportFilter)
   })
 
@@ -75,6 +80,7 @@ const App = () => {
             labelTitle="flying in or out of"
             value={airportFilter} onSelect={filteredAirportsOnSelect}
           />
+          <button onClick={clearFilters}>Show all Routes</button>
         </div>
         <Table 
           className="routes-table" 

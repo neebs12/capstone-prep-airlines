@@ -5,6 +5,7 @@ import Table from './components/Table.jsx'
 import Select from './components/Select.jsx'
 
 import data, {getAirlineById, getAirportByCode} from './data'
+import { useEffect } from 'react';
 
 const perPage = 25
 const { routes, airlines, airports } = data
@@ -28,30 +29,30 @@ const App = () => {
   const [airportFilter, setAirportFilter] = useState('')
 
   const resetPageToggler = useRef()
+  useEffect(() => {
+    // I want this to run everytime this component re-renders
+    resetPageToggler.current.resetPageToStart()
+  })
+
 
   const filteredAirlinesOnSelect = (filter) => {
     setAirlineFilter(filter)
-    resetPageToggler.current.resetPageToStart()
   }
 
   const filteredAirportsOnSelect = (filter)  => {
     setAirportFilter(filter)
-    resetPageToggler.current.resetPageToStart()
   }
 
   const clearFilters = () => {
     setAirlineFilter('')
     setAirportFilter('')
-    resetPageToggler.current.resetPageToStart()
   }
 
   let processedRoutes = routes.filter(r => {
     if (airlineFilter === '') return true
     
     return r['airline'] === +airlineFilter
-  })
-
-  processedRoutes = processedRoutes.filter(r => {
+  }).filter(r => {
     if (airportFilter === '') return true
 
     return [r['src'], r['dest']].includes(airportFilter)

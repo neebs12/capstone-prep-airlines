@@ -1,11 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 import Table from './components/Table.jsx'
 import Select from './components/Select.jsx'
 
 import data, {getAirlineById, getAirportByCode} from './data'
-import { useEffect } from 'react';
 
 const perPage = 25
 const { routes, airlines, airports } = data
@@ -22,6 +21,25 @@ function formatValue(property, value) {
   } else if (property === 'src' || property === 'dest') {
     return getAirportByCode(value).name
   }
+}
+
+function disableSelectAirlines(processedRoutes, airlines) {
+  // ---> copy
+  // airlines = JSON.parse(JSON.stringify(airlines))
+  const airlineIdAry = Array.from(new Set(processedRoutes.map(p => {
+    return p['airline']
+  })))
+
+  airlines = airlines.map(a => {
+    // if included, set to false, if not included, set to true
+    return {...a, disabled: !airlineIdAry.includes(a.id)}
+  })
+  // debugger;
+  return airlines
+}
+
+function disableSelectAirports(processedRoutes, airports) {
+
 }
 
 const App = () => {
@@ -69,7 +87,8 @@ const App = () => {
         </p>
         <div className="inline-filters">
           <Select 
-            options={airlines} 
+            // options={airlines} 
+            options={disableSelectAirlines(processedRoutes, airlines)}
             valueKey="id" titleKey="name"
             allTitle="All Airlines" 
             labelTitle="Show routes on"

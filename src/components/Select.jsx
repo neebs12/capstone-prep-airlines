@@ -17,6 +17,8 @@ const Select = ({
     onSelect(val)
   }
 
+  // debugger
+
   return (
     <div>
       <label htmlFor={allTitle}>{labelTitle}</label>
@@ -31,7 +33,7 @@ const Select = ({
           // val is therefore the id
           const val = o[valueKey]
           const title = o[titleKey]
-          return <option key={val} value={val}>{title}</option>
+          return <option disabled={o.disabled} key={val} value={val}>{title}</option>
         })}
       </select>
     </div>

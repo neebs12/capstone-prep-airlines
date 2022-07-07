@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Select = ({
-  options, valueKey, titleKey, allTitle, value, onSelect
+  options, valueKey, titleKey, allTitle, labelTitle, value, onSelect
 }) => {
   // options: the filtered airlines, or etc.
   // valueKey: prop that points to the id that is to be filtered with
@@ -14,17 +14,19 @@ const Select = ({
 
   const onChangeHandler = (e) => {
     const val = e.target.value
-    onSelect(Number(val))
+    console.log(val)
+    onSelect(val)
   }
 
   return (
     <div>
-      <label htmlFor={allTitle}>{allTitle}</label>
+      <label htmlFor={allTitle}>{labelTitle}</label>
       <select
         id={allTitle}
         value={value}
         onChange={onChangeHandler}
       >
+        <option key={allTitle} value={''}>{allTitle}</option>
         {options.map(o => {
           // o is eg: {"id":24,"name":"American Airlines"}
           // val is therefore the id

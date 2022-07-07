@@ -8,7 +8,6 @@ import data, {getAirlineById, getAirportByCode} from './data'
 
 const perPage = 25
 const { routes, airlines } = data
-const randomId = 999999
 
 const columns = [
   {name: 'Airline', property: 'airline'},
@@ -25,22 +24,20 @@ function formatValue(property, value) {
 }
 
 const App = () => {
-  const [airlineFilter, setAirlineFilter] = useState(randomId)
+  const [airlineFilter, setAirlineFilter] = useState(null)
+  const [airportFilter, setAirportFilter] = useState(null)
   /*
   <Select options={filteredAirlines} valueKey="id" titleKey="name"
   allTitle="All Airlines" value="" onSelect="" />
   */
-
-  // ---> initial will be All Airlines, which is meant to be a placeholder!!
-  const filteredAirlines = [{id: randomId, name: 'All Airlines'}].concat(airlines)
 
   const filteredAirlinesOnSelect = (filter) => {
     setAirlineFilter(filter)
   }
 
   const processedRoutes = routes.filter(r => {
-    if (airlineFilter === randomId) return true
-    return r['airline'] === airlineFilter
+    if (airlineFilter === '') return true
+    return r['airline'] === +airlineFilter
   })
 
   return (
@@ -54,9 +51,10 @@ const App = () => {
         </p>
 
         <Select 
-          options={filteredAirlines} 
+          options={airlines} 
           valueKey="id" titleKey="name"
           allTitle="All Airlines" 
+          labelTitle="Show routes on"
           value={airlineFilter} onSelect={filteredAirlinesOnSelect}
         />
         <Table 

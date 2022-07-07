@@ -42,9 +42,7 @@ function disableSelectAirports(processedRoutes, airports, filter) {
   }).flat()))
   // <--- flattens the array, so that (@map) instead of [[n0, n1], [n2, n3]], we get [n0, n1, n2, n3]
 
-  console.log(airportCodeAry, airports.length)
   airports = airports.map(a => {
-    // console.log(a.code)
     return {...a, disabled: !airportCodeAry.includes(a.code)}
   })
 

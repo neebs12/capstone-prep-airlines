@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import './App.css';
 
 import Table from './components/Table.jsx'
@@ -26,22 +26,23 @@ function formatValue(property, value) {
 const App = () => {
   const [airlineFilter, setAirlineFilter] = useState('')
   const [airportFilter, setAirportFilter] = useState('')
-  /*
-  <Select options={filteredAirlines} valueKey="id" titleKey="name"
-  allTitle="All Airlines" value="" onSelect="" />
-  */
+
+  const resetPageToggler = useRef()
 
   const filteredAirlinesOnSelect = (filter) => {
     setAirlineFilter(filter)
+    resetPageToggler.current.resetPageToStart()
   }
 
   const filteredAirportsOnSelect = (filter)  => {
     setAirportFilter(filter)
+    resetPageToggler.current.resetPageToStart()
   }
 
   const clearFilters = () => {
     setAirlineFilter('')
     setAirportFilter('')
+    resetPageToggler.current.resetPageToStart()
   }
 
   let processedRoutes = routes.filter(r => {
@@ -88,6 +89,7 @@ const App = () => {
           rows={processedRoutes}
           format={formatValue}
           perPage={perPage}
+          ref={resetPageToggler}
         />
       </section>
     </div>

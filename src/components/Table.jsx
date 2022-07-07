@@ -1,7 +1,17 @@
-import React, {useState} from 'react'
+import React, { useState, forwardRef, useImperativeHandle } from 'react'
 
-const Table = ({ className, columns, rows, format, perPage }) => {
+const Table = ({ className, columns, rows, format, perPage }, refs) => {
   const [page, setPage] = useState(0)
+
+  const resetPageToStart = () => {
+    setPage(0)
+  }
+
+  useImperativeHandle(refs, () => {
+    return {
+      resetPageToStart // <--- linked to refs
+    }
+  })
 
   // filter amount of rows based on page and perPage
   const paginatedRows = rows.slice(page, page + perPage)
@@ -32,7 +42,7 @@ const Table = ({ className, columns, rows, format, perPage }) => {
           {paginatedRows.map(constructRow)}
         </tbody>
       </table>
-      {`Showing ${page + 1}-${page + perPage} of ${rows.length} routes.`}
+      {`Showing ${page + 1}-${Math.min((page + perPage), paginatedRows.length)} of ${rows.length} routes.`}
       <br></br>
       <button 
         disabled={page === 0}
@@ -46,4 +56,4 @@ const Table = ({ className, columns, rows, format, perPage }) => {
   )
 }
 
-export default Table
+export default forwardRef(Table)

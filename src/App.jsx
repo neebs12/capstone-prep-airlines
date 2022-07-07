@@ -24,8 +24,6 @@ function formatValue(property, value) {
 }
 
 function disableSelectAirlines(processedRoutes, airlines) {
-  // ---> copy
-  // airlines = JSON.parse(JSON.stringify(airlines))
   const airlineIdAry = Array.from(new Set(processedRoutes.map(p => {
     return p['airline']
   })))
@@ -38,8 +36,19 @@ function disableSelectAirlines(processedRoutes, airlines) {
   return airlines
 }
 
-function disableSelectAirports(processedRoutes, airports) {
+function disableSelectAirports(processedRoutes, airports, filter) {
+  const airportCodeAry = Array.from(new Set(processedRoutes.map(p => {
+    return [p['src'], p['dest']]
+  }).flat()))
+  // <--- flattens the array, so that (@map) instead of [[n0, n1], [n2, n3]], we get [n0, n1, n2, n3]
 
+  console.log(airportCodeAry, airports.length)
+  airports = airports.map(a => {
+    // console.log(a.code)
+    return {...a, disabled: !airportCodeAry.includes(a.code)}
+  })
+
+  return airports
 }
 
 const App = () => {
@@ -87,15 +96,14 @@ const App = () => {
         </p>
         <div className="inline-filters">
           <Select 
-            // options={airlines} 
-            options={disableSelectAirlines(processedRoutes, airlines)}
+            options={disableSelectAirlines(processedRoutes, airlines, airlineFilter)}
             valueKey="id" titleKey="name"
             allTitle="All Airlines" 
             labelTitle="Show routes on"
             value={airlineFilter} onSelect={filteredAirlinesOnSelect}
           />
           <Select 
-            options={airports}
+            options={disableSelectAirports(processedRoutes, airports, airportFilter)}
             valueKey="code" titleKey="name"
             allTitle="All Airports"
             labelTitle="flying in or out of"

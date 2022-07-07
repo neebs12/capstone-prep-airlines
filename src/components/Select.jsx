@@ -14,7 +14,6 @@ const Select = ({
 
   const onChangeHandler = (e) => {
     const val = e.target.value
-    console.log(val)
     onSelect(val)
   }
 

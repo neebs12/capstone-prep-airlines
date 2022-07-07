@@ -7,7 +7,7 @@ import Select from './components/Select.jsx'
 import data, {getAirlineById, getAirportByCode} from './data'
 
 const perPage = 25
-const { routes, airlines } = data
+const { routes, airlines, airports } = data
 
 const columns = [
   {name: 'Airline', property: 'airline'},
@@ -24,8 +24,8 @@ function formatValue(property, value) {
 }
 
 const App = () => {
-  const [airlineFilter, setAirlineFilter] = useState(null)
-  const [airportFilter, setAirportFilter] = useState(null)
+  const [airlineFilter, setAirlineFilter] = useState('')
+  const [airportFilter, setAirportFilter] = useState('')
   /*
   <Select options={filteredAirlines} valueKey="id" titleKey="name"
   allTitle="All Airlines" value="" onSelect="" />
@@ -35,8 +35,13 @@ const App = () => {
     setAirlineFilter(filter)
   }
 
+  const filteredAirportsOnSelect = (filter)  => {
+    setAirportFilter(filter)
+  }
+
   const processedRoutes = routes.filter(r => {
     if (airlineFilter === '') return true
+    
     return r['airline'] === +airlineFilter
   })
 
@@ -57,6 +62,13 @@ const App = () => {
           labelTitle="Show routes on"
           value={airlineFilter} onSelect={filteredAirlinesOnSelect}
         />
+        {/* <Select 
+          options={airports}
+          valueKey="code" titleKey="name"
+          allTitle="All Airports"
+          labelTitle="flying in or out of"
+          value={airportFilter} onSelect={filteredAirportsOnSelect}
+        /> */}
         <Table 
           className="routes-table" 
           columns={columns}
